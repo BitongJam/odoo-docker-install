@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  odoo14-web:
+    image: odoo:14.0
+    depends_on:
+      - odoo14-db
+    volumes:
+      # - odoo-web-data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      # - ./odoo/addons:/mnt/extra-addons #to use this copy repo of odoo from git # git clone --branch 14.0 https://github.com/odoo/odoo.git
+      - ./custom_apps:/mnt/custom_apps
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=odoo14-db
+      - USER=odoo14
+      - PASSWORD=odoo14
+  odoo14-db:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo14
+      - POSTGRES_USER=odoo14
